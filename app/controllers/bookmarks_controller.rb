@@ -5,7 +5,7 @@ class BookmarksController < ApplicationController
       current_role_name.eql? 'Student'
     when 'edit', 'update', 'destroy'
       # edit, update, delete bookmarks can only be done by owner
-      current_role_name.eql? 'Student' and Bookmark.find(params[:id].to_i).user_id == session[:user].id
+      current_role_name.eql? 'Student' and Bookmark.find(params[:id]).user_id == session[:user].id
     end
   end
 
@@ -14,8 +14,6 @@ class BookmarksController < ApplicationController
     @bookmarks = Bookmark.where(topic_id: params[:id])
     @topic = SignUpTopic.find(params[:id])
     bookmark_rating_questionnaire = @topic.assignment.questionnaires.where(type: 'BookmarkRatingQuestionnaire')
-    puts bookmark_rating_questionnaire[0].nil?
-    puts "hello"
     if bookmark_rating_questionnaire[0].nil?
       @has_dropdown = true
     else
