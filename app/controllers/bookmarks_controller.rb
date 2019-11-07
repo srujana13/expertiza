@@ -9,6 +9,7 @@ class BookmarksController < ApplicationController
     end
   end
 
+  #List the participant, bookmarks created by him and topic for a particular user
   def list
     @participant = Participant.where(user_id: session[:user].id).first
     @bookmarks = Bookmark.where(topic_id: params[:id])
@@ -64,6 +65,7 @@ class BookmarksController < ApplicationController
     @bookmark = Bookmark.find(params[:id])
   end
 
+  #Saves the rating of the bookmark gives by the reviewer
   def save_bookmark_rating_score
     @bookmark = Bookmark.find(params[:id])
     @bookmark_rating = BookmarkRating.where(bookmark_id: @bookmark.id, user_id: session[:user].id).first
