@@ -13,12 +13,6 @@ class BookmarksController < ApplicationController
     @participant = Participant.where(user_id: session[:user].id).first
     @bookmarks = Bookmark.where(topic_id: params[:id])
     @topic = SignUpTopic.find(params[:id])
-    bookmark_rating_questionnaire = @topic.assignment.questionnaires.where(type: 'BookmarkRatingQuestionnaire')
-    if bookmark_rating_questionnaire[0].nil?
-      @has_dropdown = true
-    else
-      @has_dropdown = false
-    end
   end
 
   def new
@@ -81,6 +75,8 @@ class BookmarksController < ApplicationController
     redirect_to action: 'list', id: @bookmark.topic_id
   end
 
+  # Saves the responses to the bookmark review questionnaire.
+  # If a previous response exists it updates it.
   def new_bookmark_review
     bookmark = Bookmark.find(params[:id])
     topic = SignUpTopic.find(bookmark.topic_id)
@@ -99,4 +95,16 @@ class BookmarksController < ApplicationController
     end
     redirect_to new_response_url(id: response_map.id, return: 'bookmark')
   end
+
+  # checks if a dropdown is used for rating bookmarks
+  def has_dropdown?(topic)
+    bookmark_rating_questionnaire = topic.assignment.questionnaires.where(type: 'BookmarkRatingQuestionnaire')
+    if bookmark_rating_questionnaire[0].nil?
+      true
+    else
+      false
+    end
+  end
+
+  helper_method :has_dropdown?
 end

@@ -27,7 +27,7 @@
           <% sum += bookmark_rating.rating %>
         <% end %>
         <td>
-          <% if @has_dropdown %>
+          <% if has_dropdown?(@topic) %>
             <% if @bookmark_ratings.size > 0 %>
               <%= (sum * 1.0 / @bookmark_ratings.size).round(1) %>
             <% else %>
@@ -42,7 +42,7 @@
         <td>
          <!-- Only allow to rate a bookmark which is not uploaded by the current user -->
           <% if bookmark.user.id != current_user.id %>
-            <% if @has_dropdown %>
+            <% if has_dropdown?(@topic) %>
               <% if BookmarkRating.exists?(bookmark_id: bookmark.id, user_id: session[:user].id) %>
                 <% rating = BookmarkRating.where(bookmark_id: bookmark.id, user_id: session[:user].id).first.rating.to_s %>
               <% else %>
@@ -87,8 +87,7 @@
     <% end %>
   </table>
 </div>
-
-<br />
+<br/>
 
 <%= link_to 'New bookmark', :action => 'new', :id => @topic.id %> |
 <%= link_to 'Back', :controller=> 'sign_up_sheet', :action=>'list', :id => @participant.id, :assignment_id => @topic.assignment_id %>

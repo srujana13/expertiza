@@ -1,4 +1,5 @@
 describe Bookmark do
+
   let(:bookmark) { Bookmark.new url: 'test.com', title: 'test bookmark', description: 'this is a test bookmark' }
   let(:bookmark1) { Bookmark.new url: 'test1.com', title: 'test1 bookmark', description: 'this is test1 bookmark' }
   let(:bookmark2) { Bookmark.new url: 'test2.com', title: 'test2 bookmark', description: 'this is test2 bookmark' }
@@ -12,6 +13,11 @@ describe Bookmark do
       expect(bookmark).to be_valid
       bookmark.url = 'www.google.com'
       expect(bookmark).to be_valid
+    end
+    it 'Validates format of url' do
+      expect(bookmark).to be_valid
+      bookmark.url = 'testing'
+      expect(bookmark).not_to be_valid
     end
   end
   describe '#title' do
